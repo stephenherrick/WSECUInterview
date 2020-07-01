@@ -56,6 +56,11 @@ namespace WSECU.SeleniumTest.PageObjects
             signInButton.Click();
         }
 
+        public void EnterUserName(string username)
+        {
+            usernameField.SendKeys(username);
+        }
+
         /// <summary>
         /// Returns the error message when an input error is handled on the page
         /// </summary>

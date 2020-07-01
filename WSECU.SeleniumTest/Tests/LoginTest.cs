@@ -13,7 +13,9 @@ namespace WSECU.SeleniumTest
     public class LoginTest
     {
         private static string BaseUrl;
-        private IWebDriver driver;
+        private static IWebDriver driver;
+        private string incorrectUsername = "ThisIsNotARealUsername";
+        private string incorrectPassword = "VeryFakePassword1";
 
         [AssemblyInitialize]
         public static void TestSuiteStartUp(TestContext context)
@@ -39,14 +41,14 @@ namespace WSECU.SeleniumTest
             driver.Quit();
         }
 
-        [DataTestMethod]
-        [DataRow("youcanthavethisusername")]
-        public void EnterWrongUsername(string incorrectUsername)
+        [TestMethod]
+        public void EnterIncorrectUsername_RedirectReturned()
         {
             driver.Url = $"https://{BaseUrl}";
             var login = new LandingPage(driver);
             login.EnterUsernameClickSignIn(incorrectUsername);
-            
+
+
             WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
             wait.Until((d) =>
             {
@@ -56,9 +58,17 @@ namespace WSECU.SeleniumTest
 
             var onlineLoginUrl = $"https://digital.{BaseUrl}/banking/signin";
             Assert.AreEqual(onlineLoginUrl, driver.Url);
+        }
+
+        [TestMethod]
+        public void EnterIncorrectPassword_ErrorMessageReturned()
+        {
+            driver.Url = $"https://digital.{BaseUrl}/banking/signin";
 
             var signIn = new SignIn(driver);
-            signIn.EnterPasswordClickSignIn("hunter");
+            signIn.EnterUserName(incorrectUsername);
+            signIn.EnterPasswordClickSignIn(incorrectPassword);
+
             Assert.AreEqual("Sorry, incorrect username.", signIn.GetErrorMessage().Trim());
         }
     }
