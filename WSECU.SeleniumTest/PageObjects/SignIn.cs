@@ -1,7 +1,4 @@
 ﻿using OpenQA.Selenium;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace WSECU.SeleniumTest.PageObjects
 {
@@ -40,17 +37,29 @@ namespace WSECU.SeleniumTest.PageObjects
             }
         }
 
+        /// <summary>
+        /// BaseUrl/Banking/signin page for WSECU.org
+        /// </summary>
+        /// <param name="driver"><see cref="IWebDriver"/></param>
         public SignIn(IWebDriver driver)
         {
             this.driver = driver;
         }
 
+        /// <summary>
+        /// Enters the password into the password field and clicks the Sign In button
+        /// </summary>
+        /// <param name="password"></param>
         public void EnterPasswordClickSignIn(string password)
         {
             passwordField.SendKeys(password);
             signInButton.Click();
         }
 
+        /// <summary>
+        /// Returns the error message when an input error is handled on the page
+        /// </summary>
+        /// <returns></returns>
         public string GetErrorMessage()
         {
             return errorMessage.Text;

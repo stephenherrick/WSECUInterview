@@ -1,7 +1,4 @@
 ﻿using OpenQA.Selenium;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace WSECU.SeleniumTest.PageObjects
 {
@@ -25,11 +22,19 @@ namespace WSECU.SeleniumTest.PageObjects
             }
         }
 
+        /// <summary>
+        /// Home page for WSECU.org
+        /// </summary>
+        /// <param name="driver"><see cref="IWebDriver"/></param>
         public LandingPage(IWebDriver driver)
         {
             this.driver = driver;
         }
 
+        /// <summary>
+        /// Enters the defined username into the username field
+        /// </summary>
+        /// <param name="username"></param>
         public void EnterUsernameClickSignIn(string username)
         {
             usernameField.SendKeys(username);

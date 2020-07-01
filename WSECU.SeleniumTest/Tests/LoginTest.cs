@@ -1,11 +1,11 @@
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Microsoft.Extensions.Configuration;
-using System.IO;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
-using System;
-using WSECU.SeleniumTest.PageObjects;
 using OpenQA.Selenium.Support.UI;
+using System;
+using System.IO;
+using WSECU.SeleniumTest.PageObjects;
 
 namespace WSECU.SeleniumTest
 {
@@ -28,7 +28,7 @@ namespace WSECU.SeleniumTest
         [TestInitialize]
         public void TestStartUp()
         {
-            driver = new ChromeDriver(AppDomain.CurrentDomain.BaseDirectory);
+            driver = new ChromeDriver();
             driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
         }
 
@@ -43,9 +43,10 @@ namespace WSECU.SeleniumTest
         [DataRow("youcanthavethisusername")]
         public void EnterWrongUsername(string incorrectUsername)
         {
-            driver.Url = BaseUrl;
+            driver.Url = $"https://{BaseUrl}";
             var login = new LandingPage(driver);
             login.EnterUsernameClickSignIn(incorrectUsername);
+            
             WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
             wait.Until((d) =>
             {
@@ -53,7 +54,8 @@ namespace WSECU.SeleniumTest
                 return element.Displayed ? element : null;
             });
 
-            Assert.AreEqual($"https://digital.wsecu.org/banking/signin", driver.Url);
+            var onlineLoginUrl = $"https://digital.{BaseUrl}/banking/signin";
+            Assert.AreEqual(onlineLoginUrl, driver.Url);
 
             var signIn = new SignIn(driver);
             signIn.EnterPasswordClickSignIn("hunter");
